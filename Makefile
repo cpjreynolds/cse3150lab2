@@ -1,22 +1,37 @@
 CXXFLAGS=-Wall -g --std=c++17
 
-TARGET=lab2.out
+# testing target
+TESTTARGET=lab2test.out
+# runnable target
+RUNTARGET=lab2.out
 
+# all source files including test
 SOURCES:=$(wildcard *.cpp)
 OBJECTS:=$(SOURCES:.cpp=.o)
 
-.PHONY: all clean check
+# only the regular main file
+ROBJECTS:=$(filter-out lab2.test.o,$(OBJECTS))
+# only the testing main file
+TOBJECTS:=$(filter-out lab2.o,$(OBJECTS))
 
-all: $(TARGET)
+.PHONY: all clean check run
 
-check: all
-	./$(TARGET)
+all: $(RUNTARGET) $(TESTTARGET)
 
-$(TARGET): $(OBJECTS)
+check: $(TESTTARGET)
+	./$(TESTTARGET)
+
+run: $(RUNTARGET)
+	./$(RUNTARGET)
+
+$(TESTTARGET): $(TOBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
+$(RUNTARGET): $(ROBJECTS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 clean:
 	rm -f \
-		$(OBJECTS)	\
-		$(TARGET)
+		$(OBJECTS)		\
+		$(RUNTARGET)	\
+		$(TESTTARGET)

@@ -68,7 +68,7 @@ static std::tuple<double, size_t> do_thing(size_t n_samples, size_t scram_n,
 #ifndef TESTING
 
 // default number of samples per batch
-static constexpr size_t N_SAMPLES = 1 << 11;
+static constexpr size_t N_SAMPLES = 1 << 10;
 // default `n` of scrambled lists. actual size is 2n.
 static constexpr size_t SCRAMBLE_N = 1 << 4;
 // target epsilon (closeness to true probability) defined as (stddev / sqrt(n))

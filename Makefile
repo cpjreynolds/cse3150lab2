@@ -10,9 +10,9 @@ SOURCES:=$(wildcard *.cpp)
 OBJECTS:=$(SOURCES:.cpp=.o)
 
 # only the regular main file
-RSOURCES:=$(filter-out %.test.cpp,$(SOURCES))
+#RSOURCES:=$(filter-out %.test.cpp,$(SOURCES))
 # only the testing main file
-TSOURCES:=$(filter-out lab2.cpp,$(SOURCES))
+#TSOURCES:=$(filter-out lab2.cpp,$(SOURCES))
 
 .PHONY: all clean check run
 
@@ -24,10 +24,10 @@ check: $(TESTTARGET)
 run: $(RUNTARGET)
 	./$(RUNTARGET)
 
-$(TESTTARGET): $(TSOURCES)
+$(TESTTARGET): $(SOURCES)
 	$(CXX) $(CPPFLAGS) -DTESTING $(CXXFLAGS) $^ -o $@
 
-$(RUNTARGET): $(RSOURCES)
+$(RUNTARGET): $(SOURCES)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 
 clean:

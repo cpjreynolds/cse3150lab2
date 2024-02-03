@@ -1,6 +1,7 @@
 #include <random>
 #include "balance.hpp"
 #include "prefix.hpp"
+#include <iostream>
 
 // performs the in-place Fisher-Yates scramble on the given list.
 //
@@ -49,3 +50,60 @@ bool is_balanced(const std::vector<int>& lst)
 {
     return non_neg_prefix_sum(lst) || non_pos_prefix_sum(lst);
 }
+
+#ifdef TESTING
+#include "doctest.h"
+
+// the RNG seed is always the same during testing so these are replicable.
+
+TEST_CASE("do_scramble")
+{
+    std::vector<int> data1{1, 1, 1, -1, -1, -1};
+    std::vector<int> result1{-1, 1, -1, 1, 1, -1};
+
+    do_scramble(data1);
+    CHECK_EQ(data1, result1);
+}
+
+TEST_CASE("generate_unscrambled")
+{
+    std::vector<int> result1{1, -1};
+    std::vector<int> result2{1, 1, 1, 1, -1, -1, -1, -1};
+
+    auto data1 = generate_unscrambled(1);
+    auto data2 = generate_unscrambled(4);
+
+    CHECK_EQ(data1, result1);
+    CHECK_EQ(data2, result2);
+}
+
+TEST_CASE("generate_scrambles")
+{
+    std::vector<int> result1{-1, 1, 1, -1, -1, -1, 1, 1};
+    std::vector<int> result2{1, 1, -1, -1, -1, 1, 1, -1};
+    auto data = generate_scrambles(2, 4);
+    CHECK_EQ(data.size(), 2);
+    CHECK_EQ(data[0], result1);
+    CHECK_EQ(data[1], result2);
+}
+
+TEST_CASE("is_balanced")
+{
+    // using the examples from the assignment pdf
+    std::vector<int> data1{1, -1};
+    std::vector<int> data2{1, -1, 1, -1};
+    std::vector<int> data3{1, 1, 1, 1, -1, -1, -1, -1};
+    std::vector<int> data4{1, 1, -1, 1, 1, 1, -1, -1, -1, -1};
+
+    std::vector<int> bdata1{1, -1, -1, 1};
+    std::vector<int> bdata2{1, 1, 1, -1, -1, -1, -1, -1, 1, 1};
+
+    CHECK(is_balanced(data1));
+    CHECK(is_balanced(data2));
+    CHECK(is_balanced(data3));
+    CHECK(is_balanced(data4));
+    CHECK_FALSE(is_balanced(bdata1));
+    CHECK_FALSE(is_balanced(bdata2));
+}
+
+#endif

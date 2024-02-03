@@ -3,6 +3,9 @@
 #include "prefix.hpp"
 
 // performs the in-place Fisher-Yates scramble on the given list.
+//
+// uses c++ random facilities as `std::rand() % range` introduces statistical
+// bias whereas `uniform_int_distribution` does not.
 static void do_scramble(std::vector<int>& lst)
 {
     // static so the RNG is instantiated only once upon first invocation.
